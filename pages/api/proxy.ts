@@ -13,7 +13,6 @@ export const config = {
     "dub1",
     "fra1",
     "gru1",
-    "hkg1",
     "hnd1",
     "iad1",
     "icn1",
