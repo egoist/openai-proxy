@@ -3,14 +3,20 @@
   "version": "0.0.0",
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230307.0",
+    "typescript": "^5.0.2",
     "wrangler": "2.8.0"
   },
   "private": true,
   "scripts": {
-    "start": "wrangler dev",
-    "deploy": "wrangler publish"
+    "dev-cloudflare": "wrangler dev",
+    "deploy-cloudflare": "wrangler publish",
+    "dev-next": "next",
+    "vercel-build": "next build"
   },
   "dependencies": {
+    "next": "^13.2.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "reflare": "^1.1.1"
   }
 }

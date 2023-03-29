@@ -7,7 +7,7 @@
  *
  * Learn more at https://developers.cloudflare.com/workers/
  */
-import useReflare from "reflare";
+import handleRequest from "./handle-request";
 
 export interface Env {
   // Example binding to KV. Learn more at https://developers.cloudflare.com/workers/runtime-apis/kv/
@@ -26,20 +26,6 @@ export default {
     env: Env,
     ctx: ExecutionContext
   ): Promise<Response> {
-    const handleRequest = async (request: Request): Promise<Response> => {
-      const reflare = await useReflare();
-
-      reflare.push({
-        path: "/*",
-        upstream: {
-          domain: "api.openai.com",
-          protocol: "https",
-        },
-      });
-
-      return reflare.handle(request);
-    };
-
     return handleRequest(request);
   },
 };
