@@ -9,14 +9,16 @@ const pickHeaders = (headers: Headers, keys: string[]): Headers => {
   return picked;
 };
 
+const CORS_HEADERS: Record<string, string> = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
 export default async function handleRequest(req: Request & { nextUrl?: URL }) {
   if (req.method === "OPTIONS") {
     return new Response(null, {
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-      },
+      headers: CORS_HEADERS,
     });
   }
 
@@ -29,6 +31,10 @@ export default async function handleRequest(req: Request & { nextUrl?: URL }) {
     method: req.method,
     headers,
   });
+
+  for (const key in CORS_HEADERS) {
+    res.headers.set(key, CORS_HEADERS[key]);
+  }
 
   return res;
 }
