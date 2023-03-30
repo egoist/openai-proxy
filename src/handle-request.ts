@@ -40,8 +40,8 @@ export default async function handleRequest(req: Request & { nextUrl?: URL }) {
     if (key.startsWith("cf-")) {
       res.headers.delete(key);
     }
-    res.headers.delete("alt-svc");
   }
+  res.headers.delete("alt-svc");
 
   return res;
 }
