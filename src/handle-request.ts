@@ -10,9 +10,9 @@ const pickHeaders = (headers: Headers, keys: string[]): Headers => {
 };
 
 const CORS_HEADERS: Record<string, string> = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  "access-control-allow-origin": "*",
+  "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
+  "access-control-allow-headers": "Content-Type, Authorization",
 };
 
 export default async function handleRequest(req: Request & { nextUrl?: URL }) {
@@ -34,6 +34,13 @@ export default async function handleRequest(req: Request & { nextUrl?: URL }) {
 
   for (const key in CORS_HEADERS) {
     res.headers.set(key, CORS_HEADERS[key]);
+  }
+
+  for (const key of res.headers.keys()) {
+    if (key.startsWith("cf-")) {
+      res.headers.delete(key);
+    }
+    res.headers.delete("alt-svc");
   }
 
   return res;
