@@ -1,9 +1,11 @@
-const pickHeaders = (headers: Headers, keys: string[]): Headers => {
+const pickHeaders = (headers: Headers, keys: (string | RegExp)[]): Headers => {
   const picked = new Headers();
-  for (const key of keys) {
-    const value = headers.get(key);
-    if (typeof value === "string") {
-      picked.set(key, value);
+  for (const key of headers.keys()) {
+    if (keys.some((k) => (typeof k === "string" ? k === key : k.test(key)))) {
+      const value = headers.get(key);
+      if (typeof value === "string") {
+        picked.set(key, value);
+      }
     }
   }
   return picked;
@@ -32,16 +34,14 @@ export default async function handleRequest(req: Request & { nextUrl?: URL }) {
     headers,
   });
 
-  for (const key in CORS_HEADERS) {
-    res.headers.set(key, CORS_HEADERS[key]);
-  }
+  const resHeaders = {
+    ...CORS_HEADERS,
+    ...Object.fromEntries(
+      pickHeaders(res.headers, ["content-type", /^x-ratelimit-/, /^openai-/])
+    ),
+  };
 
-  for (const key of res.headers.keys()) {
-    if (key.startsWith("cf-")) {
-      res.headers.delete(key);
-    }
-  }
-  res.headers.delete("alt-svc");
-
-  return res;
+  return new Response(res.body, {
+    headers: resHeaders,
+  });
 }
