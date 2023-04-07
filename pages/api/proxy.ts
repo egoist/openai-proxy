@@ -4,6 +4,7 @@ export const config = {
   runtime: "edge", // this is a pre-requisite
   // exclude hongkong cause it's not supported by OpenAI
   regions: [
+    "sin1",
     "cdg1",
     "arn1",
     "dub1",
@@ -16,7 +17,6 @@ export const config = {
     "hnd1",
     "icn1",
     "kix1",
-    "sin1",
     "bom1",
     "syd1",
     "fra1",
