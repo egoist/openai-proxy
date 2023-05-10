@@ -43,5 +43,6 @@ export default async function handleRequest(req: Request & { nextUrl?: URL }) {
 
   return new Response(res.body, {
     headers: resHeaders,
+    status: res.status
   });
 }
